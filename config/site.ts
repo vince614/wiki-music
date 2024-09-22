@@ -10,7 +10,7 @@ export const siteConfig = {
     },
     {
       label: "Songs",
-      href: "/docs",
+      href: "/song",
     },
     {
       label: "Artists",

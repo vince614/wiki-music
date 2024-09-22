@@ -1,4 +1,4 @@
-import {IconSvgProps} from "./types";
+import {IconSvgProps} from "../../config/types";
 
 export const PlusIcon = ({size = 24, width, height, ...props}: IconSvgProps) => (
   <svg

@@ -1,4 +1,4 @@
-import {IconSvgProps} from "./types";
+import {IconSvgProps} from "../../config/types";
 
 export const SearchIcon = (props: IconSvgProps) => (
   <svg
