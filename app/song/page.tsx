@@ -1,6 +1,7 @@
+import { Spacer } from "@nextui-org/react";
+
 import { title } from "@/components/primitives";
 import SongTable from "@/components/search/SongTable";
-import { Spacer } from "@nextui-org/react";
 
 export default function SongPage() {
   return (
