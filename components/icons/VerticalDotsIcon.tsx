@@ -1,4 +1,4 @@
-import {IconSvgProps} from "../../config/types";
+import { IconSvgProps } from "@/types";
 
 export const VerticalDotsIcon = ({size = 24, width, height, ...props}: IconSvgProps) => (
   <svg

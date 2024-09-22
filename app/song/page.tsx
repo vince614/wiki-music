@@ -1,5 +1,5 @@
 import { title } from "@/components/primitives";
-import Table from "@/components/search/Table";
+import SongTable from "@/components/search/SongTable";
 import { Spacer } from "@nextui-org/react";
 
 export default function SongPage() {
@@ -7,7 +7,7 @@ export default function SongPage() {
     <div className="w-full d-flex">
       <h1 className={title()}>Songs</h1>
       <Spacer y={5} />
-      <Table />
+      <SongTable />
     </div>
   );
 }

@@ -320,7 +320,7 @@ export default function App() {
               )}
           </TableHeader>
           <TableBody emptyContent={"No users found"} items={sortedItems}>
-              {(item: { id: any; name?: string; role?: string; team?: string; status?: string; age?: string; avatar?: string; email?: string; }) => (
+              {(item) => (
                 <TableRow key={item.id}>
                     {(columnKey: React.Key) => <TableCell>{renderCell(item, columnKey)}</TableCell>}
                 </TableRow>
