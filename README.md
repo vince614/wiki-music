@@ -1,22 +1,60 @@
-# Next.js & NextUI Template
+# Next.js Music App
 
-This is a template for creating applications using Next.js 14 (app directory) and NextUI (v2).
+## List of commands
 
-[Try it on CodeSandbox](https://githubbox.com/nextui-org/next-app-template)
+### Prisma 
 
-## Technologies Used
+Generate Prisma client:
+```
+npx prisma generate
+```
 
-- [Next.js 14](https://nextjs.org/docs/getting-started)
-- [NextUI v2](https://nextui.org/)
-- [Tailwind CSS](https://tailwindcss.com/)
-- [Tailwind Variants](https://tailwind-variants.org)
-- [TypeScript](https://www.typescriptlang.org/)
-- [Framer Motion](https://www.framer.com/motion/)
-- [next-themes](https://github.com/pacocoursey/next-themes)
+Create migration:
+```
+npx prisma migrate dev --name <migration-name>
+```
 
-## Postgres Database
+Apply migration:
+```
+npx prisma migrate deploy
+```
 
-Connect to database
+Reset database:
+```
+npx prisma migrate reset
+```
+
+### Next js
+
+Lint code:
+```
+npm run lint
+```
+
+Run development server:
+```
+npm run dev
+```
+
+Build project:
+```
+npm run build
+```
+
+
+## Postgres
+
+Connect to database postgres container:
 ```
 docker exec -it db psql -U postgres
+```
+
+Show databases:
+```
+\l
+```
+
+Show schemas:
+```
+\dn
 ```
