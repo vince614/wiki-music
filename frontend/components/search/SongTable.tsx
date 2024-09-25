@@ -194,7 +194,7 @@ export default function App() {
   }, []);
 
   const onClear = React.useCallback(() => {
-    setFilterValue("");
+    setFilterValue('');
     setPage(1);
   }, []);
 
@@ -205,7 +205,7 @@ export default function App() {
           <Input
             isClearable
             className="w-full sm:max-w-[44%]"
-            placeholder="Search by name..."
+            placeholder="Search by song name..."
             startContent={<SearchIcon />}
             value={filterValue}
             onClear={() => onClear()}
