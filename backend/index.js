@@ -83,6 +83,23 @@ app.delete('/users/:id', async (req, res, next) => {
   }
 });
 
+// Find song by title or artist
+app.get('/songs', async (req, res, next) => {
+  try {
+    const songs = await prisma.song.findMany({
+      where: {
+        OR: [
+          { title: { contains: req.query.search.toString() } },
+          { artist: { contains: req.query.search.toString() } },
+        ],
+      },
+    });
+    res.status(200).json(songs);
+  } catch (err) {
+    next(err);
+  }
+});
+
 //Start server
 const PORT = process.env.PORT || 4000;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));

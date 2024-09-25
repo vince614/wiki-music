@@ -4,9 +4,9 @@
 
 ### Prisma 
 
-Generate Prisma client:
+Prisma studio:
 ```
-npx prisma generate
+npx prisma studio
 ```
 
 Create migration:
@@ -14,14 +14,9 @@ Create migration:
 npx prisma migrate dev --name <migration-name>
 ```
 
-Apply migration:
+Generate Prisma client:
 ```
-npx prisma migrate deploy
-```
-
-Reset database:
-```
-npx prisma migrate reset
+npx prisma generate
 ```
 
 ### Next js

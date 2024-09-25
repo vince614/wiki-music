@@ -10,9 +10,30 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-//User with id as int autoincrement, name as string, email as string
 model User {
   id    Int    @id @default(autoincrement())
   name  String
   email String
+  avatar String?
+  playlists Playlist[]
+}
+
+model Playlist {
+  id          Int      @id @default(autoincrement())
+  name        String
+  description String?
+  userId      Int
+  author      User     @relation(fields: [userId], references: [id])
+  songs       Song[]
+}
+
+model Song {
+  id        Int      @id @default(autoincrement())
+  title     String
+  artist    String
+  url       String
+  duration  Int
+  playlist  Playlist @relation(fields: [playlistId], references: [id])
+  playlistId Int
+  test     String?
 }
