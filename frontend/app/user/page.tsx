@@ -1,18 +1,14 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import { UserInterface } from '@/types/interface';
+import { fetchAllUsers } from "@/lib/user/data";
 import CardComponent from '@/components/CardComponent';
-
-interface User {
-  id: number;
-  name: string;
-  email: string;
-}
 
 export default function Home() {
   const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:4000';
-  const [users, setUsers] = useState<User[]>([]);
+  const [users, setUsers] = useState<UserInterface[]>([]);
   const [newUser, setNewUser] = useState({ name: '', email: '' });
   const [updateUser, setUpdateUser] = useState({ id: '', name: '', email: '' });
 
@@ -20,8 +16,8 @@ export default function Home() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get(`${apiUrl}/users`);
-        setUsers(response.data.reverse());
+        const users: UserInterface[] = await fetchAllUsers();
+        setUsers(users.reverse());
       } catch (error) {
         console.error('Error fetching data:', error);
       }
