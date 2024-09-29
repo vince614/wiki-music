@@ -4,5 +4,4 @@ export interface UserFormInterface {
   email: string;
   avatar?: string | null;
   provider: string;
-  provider_id: string;
 }

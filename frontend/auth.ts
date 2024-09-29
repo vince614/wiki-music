@@ -31,11 +31,13 @@ const config = {
   callbacks: {
     // Update or insert user data in the database
     async signIn({ user, account }) {
+      if (!user.email) return false;
+
       const userInfos = await upsertUser({
         name: user.name ?? "Unknown User",
         email: user.email,
         avatar: user.image,
-        provider: account.provider,
+        provider: account?.provider ?? "form",
       });
 
       return !!userInfos;

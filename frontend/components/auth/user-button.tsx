@@ -1,6 +1,9 @@
+"use client";
+
+import { useSession } from "next-auth/react";
+
 import { Avatar, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
-import { auth } from "@/auth";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -10,16 +13,14 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { SignIn, SignOut } from "@/components/auth/auth-components";
 
-export default async function UserButton() {
-  const session = await auth();
+export default function UserButton() {
+  const { data: session } = useSession();
 
-  if (!session?.user) return <SignIn />;
-
-  return (
+  return !session?.user ? (
+    <SignIn />
+  ) : (
     <div className="flex items-center gap-2">
-      <span className="hidden text-sm sm:inline-flex">
-        {session.user.name}
-      </span>
+      <span className="hidden text-sm sm:inline-flex">{session.user.name}</span>
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
           <Button className="relative h-8 w-8 rounded-full" variant="ghost">
@@ -37,9 +38,7 @@ export default async function UserButton() {
         <DropdownMenuContent forceMount align="end" className="w-56">
           <DropdownMenuLabel className="font-normal">
             <div className="flex flex-col space-y-1">
-              <p className="text-sm font-medium leading-none">
-                {session.user.name}
-              </p>
+              <p className="text-sm font-medium leading-none">{session.user.name}</p>
               <p className="text-muted-foreground text-xs leading-none">
                 {session.user.email}
               </p>
