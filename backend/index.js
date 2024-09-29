@@ -15,16 +15,24 @@ app.use((req, res, next) => {
   next();
 });
 
-//test api with error handling
-app.get('/test', (req, res, next) => {
+
+// Upsert user
+app.post('/users/upsert', async (req, res, next) => {
   try {
-    res.status(200).json({ message: 'Success!' });
+    const user = await prisma.user.upsert({
+      where: {
+        email: req.body.email,
+      },
+      update: { ... req.body },
+      create: { ... req.body },
+    });
+    res.status(201).json(user);
   } catch (err) {
     next(err);
   }
 });
 
-//get all users
+// get all users
 app.get('/users', async (req, res, next) => {
   try {
     const users = await prisma.user.findMany();

@@ -1,5 +1,6 @@
 import type { NextAuthConfig } from "next-auth";
 
+// eslint-disable-next-line import/order
 import NextAuth from "next-auth";
 import "next-auth/jwt";
 
@@ -8,6 +9,8 @@ import Google from "next-auth/providers/google";
 import { createStorage } from "unstorage";
 import memoryDriver from "unstorage/drivers/memory";
 import { UnstorageAdapter } from "@auth/unstorage-adapter";
+
+import { upsertUser } from "@/lib/user/data";
 
 // Create a storage instance
 const storage = createStorage({
@@ -22,11 +25,21 @@ const config = {
     brandColor: "#7289da",
     logo: "https://authjs.dev/img/logo-sm.png",
   },
-  adapter: UnstorageAdapter(storage), // Use the storage adapter
+  adapter: UnstorageAdapter(storage),
   providers: [Discord, Google],
-  //basePath: "/auth",
   session: { strategy: "jwt" },
   callbacks: {
+    // Update or insert user data in the database
+    async signIn({ user, account }) {
+      const userInfos = await upsertUser({
+        name: user.name ?? "Unknown User",
+        email: user.email,
+        avatar: user.image,
+        provider: account.provider,
+      });
+
+      return !!userInfos;
+    },
     authorized({ request, auth }) {
       const { pathname } = request.nextUrl;
 
