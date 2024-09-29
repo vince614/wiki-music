@@ -1,25 +1,27 @@
-'use client';
+"use client";
 
-import React, { useEffect, useState } from 'react';
-import axios from 'axios';
-import { UserInterface } from '@/types/interface';
+import React, { useEffect, useState } from "react";
+import axios from "axios";
+
+import { UserInterface } from "@/types/interface";
 import { fetchAllUsers } from "@/lib/user/data";
-import CardComponent from '@/components/CardComponent';
+import CardComponent from "@/components/CardComponent";
 
 export default function Home() {
-  const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:4000';
+  const apiUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:4000";
   const [users, setUsers] = useState<UserInterface[]>([]);
-  const [newUser, setNewUser] = useState({ name: '', email: '' });
-  const [updateUser, setUpdateUser] = useState({ id: '', name: '', email: '' });
+  const [newUser, setNewUser] = useState({ name: "", email: "" });
+  const [updateUser, setUpdateUser] = useState({ id: "", name: "", email: "" });
 
   // Fetch users
   useEffect(() => {
     const fetchData = async () => {
       try {
         const users: UserInterface[] = await fetchAllUsers();
+
         setUsers(users.reverse());
       } catch (error) {
-        console.error('Error fetching data:', error);
+        console.error("Error fetching data:", error);
       }
     };
 
@@ -31,10 +33,11 @@ export default function Home() {
     e.preventDefault();
     try {
       const response = await axios.post(`${apiUrl}/users`, newUser);
+
       setUsers([response.data, ...users]);
-      setNewUser({ name: '', email: '' });
+      setNewUser({ name: "", email: "" });
     } catch (error) {
-      console.error('Error creating user:', error);
+      console.error("Error creating user:", error);
     }
   };
 
@@ -42,18 +45,22 @@ export default function Home() {
   const handleUpdateUser = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
-      await axios.put(`${apiUrl}/users/${updateUser.id}`, { name: updateUser.name, email: updateUser.email });
-      setUpdateUser({ id: '', name: '', email: '' });
+      await axios.put(`${apiUrl}/users/${updateUser.id}`, {
+        name: updateUser.name,
+        email: updateUser.email,
+      });
+      setUpdateUser({ id: "", name: "", email: "" });
       setUsers(
         users.map((user) => {
           if (user.id === parseInt(updateUser.id)) {
             return { ...user, name: updateUser.name, email: updateUser.email };
           }
+
           return user;
-        })
+        }),
       );
     } catch (error) {
-      console.error('Error updating user:', error);
+      console.error("Error updating user:", error);
     }
   };
 
@@ -63,56 +70,73 @@ export default function Home() {
       await axios.delete(`${apiUrl}/users/${userId}`);
       setUsers(users.filter((user) => user.id !== userId));
     } catch (error) {
-      console.error('Error deleting user:', error);
+      console.error("Error deleting user:", error);
     }
   };
 
   return (
     <main className="flex flex-col items-center justify-center min-h-screen p-4 bg-gray-100">
       <div className="space-y-4 w-full max-w-2xl">
-        <h1 className="text-2xl font-bold text-gray-800 text-center">User Management App</h1>
+        <h1 className="text-2xl font-bold text-gray-800 text-center">
+          User Management App
+        </h1>
 
         {/* Form to add new user */}
-        <form onSubmit={createUser} className="p-4 bg-blue-100 rounded shadow">
+        <form className="p-4 bg-blue-100 rounded shadow" onSubmit={createUser}>
           <input
+            className="mb-2 w-full p-2 border border-gray-300 rounded"
             placeholder="Name"
             value={newUser.name}
             onChange={(e) => setNewUser({ ...newUser, name: e.target.value })}
-            className="mb-2 w-full p-2 border border-gray-300 rounded"
           />
 
           <input
+            className="mb-2 w-full p-2 border border-gray-300 rounded"
             placeholder="Email"
             value={newUser.email}
             onChange={(e) => setNewUser({ ...newUser, email: e.target.value })}
-            className="mb-2 w-full p-2 border border-gray-300 rounded"
           />
-          <button type="submit" className="w-full p-2 text-white bg-blue-500 rounded hover:bg-blue-600">
+          <button
+            className="w-full p-2 text-white bg-blue-500 rounded hover:bg-blue-600"
+            type="submit"
+          >
             Add User
           </button>
         </form>
 
         {/* Form to update user */}
-        <form onSubmit={handleUpdateUser} className="p-4 bg-green-100 rounded shadow">
+        <form
+          className="p-4 bg-green-100 rounded shadow"
+          onSubmit={handleUpdateUser}
+        >
           <input
+            className="mb-2 w-full p-2 border border-gray-300 rounded"
             placeholder="User ID"
             value={updateUser.id}
-            onChange={(e) => setUpdateUser({ ...updateUser, id: e.target.value })}
-            className="mb-2 w-full p-2 border border-gray-300 rounded"
+            onChange={(e) =>
+              setUpdateUser({ ...updateUser, id: e.target.value })
+            }
           />
           <input
+            className="mb-2 w-full p-2 border border-gray-300 rounded"
             placeholder="New Name"
             value={updateUser.name}
-            onChange={(e) => setUpdateUser({ ...updateUser, name: e.target.value })}
-            className="mb-2 w-full p-2 border border-gray-300 rounded"
+            onChange={(e) =>
+              setUpdateUser({ ...updateUser, name: e.target.value })
+            }
           />
           <input
+            className="mb-2 w-full p-2 border border-gray-300 rounded"
             placeholder="New Email"
             value={updateUser.email}
-            onChange={(e) => setUpdateUser({ ...updateUser, email: e.target.value })}
-            className="mb-2 w-full p-2 border border-gray-300 rounded"
+            onChange={(e) =>
+              setUpdateUser({ ...updateUser, email: e.target.value })
+            }
           />
-          <button type="submit" className="w-full p-2 text-white bg-green-500 rounded hover:bg-green-600">
+          <button
+            className="w-full p-2 text-white bg-green-500 rounded hover:bg-green-600"
+            type="submit"
+          >
             Update User
           </button>
         </form>
@@ -120,9 +144,15 @@ export default function Home() {
         {/* Display users */}
         <div className="space-y-2">
           {users.map((user) => (
-            <div key={user.id} className="flex items-center justify-between bg-white p-4 rounded-lg shadow">
+            <div
+              key={user.id}
+              className="flex items-center justify-between bg-white p-4 rounded-lg shadow"
+            >
               <CardComponent card={user} />
-              <button onClick={() => deleteUser(user.id)} className="bg-red-500 hover:bg-red-600 text-white py-2 px-4 rounded">
+              <button
+                className="bg-red-500 hover:bg-red-600 text-white py-2 px-4 rounded"
+                onClick={() => deleteUser(user.id)}
+              >
                 Delete User
               </button>
             </div>
