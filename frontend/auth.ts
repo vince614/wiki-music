@@ -6,6 +6,8 @@ import "next-auth/jwt";
 
 import Discord from "next-auth/providers/discord";
 import Google from "next-auth/providers/google";
+import Spotify from "next-auth/providers/spotify";
+
 import { createStorage } from "unstorage";
 import memoryDriver from "unstorage/drivers/memory";
 import { UnstorageAdapter } from "@auth/unstorage-adapter";
@@ -26,7 +28,7 @@ const config = {
     logo: "https://authjs.dev/img/logo-sm.png",
   },
   adapter: UnstorageAdapter(storage),
-  providers: [Discord, Google],
+  providers: [Discord, Google, Spotify],
   session: { strategy: "jwt" },
   callbacks: {
     // Update or insert user data in the database
@@ -49,9 +51,8 @@ const config = {
 
       return true;
     },
-    jwt({ token, trigger, session, account }) {
-      if (trigger === "update") token.name = session.user.name;
-      if (account?.provider === "keycloak") {
+    jwt({ token, account }) {
+      if (account?.provider === "spotify") {
         return { ...token, accessToken: account.access_token };
       }
 
@@ -68,7 +69,7 @@ const config = {
   experimental: {
     enableWebAuthn: true,
   },
-  debug: process.env.NODE_ENV !== "production",
+  debug: false,
 } satisfies NextAuthConfig;
 
 export const { handlers, auth, signIn, signOut } = NextAuth(config);
