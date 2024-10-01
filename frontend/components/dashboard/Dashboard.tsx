@@ -16,11 +16,11 @@ import { cn } from "@nextui-org/react";
 import { User } from "next-auth";
 
 import { Logo } from "@/components/icons";
-import ProfileSetting from "@/components/dashboard/profile-setting";
-import AppearanceSetting from "@/components/dashboard/appearance-setting";
-import AccountSetting from "@/components/dashboard/account-setting";
-import BillingSetting from "@/components/dashboard/billing-setting";
-import TeamSetting from "@/components/dashboard/team-setting";
+import ProfileSetting from "@/components/dashboard/settings/profile-setting";
+import AppearanceSetting from "@/components/dashboard/settings/appearance-setting";
+import AccountSetting from "@/components/dashboard/settings/account-setting";
+import BillingSetting from "@/components/dashboard/settings/billing-setting";
+import TeamSetting from "@/components/dashboard/settings/team-setting";
 import SidebarDrawer from "@/components/dashboard/sidebar-drawer";
 import Sidebar from "@/components/dashboard/sidebar/sidebar";
 import { items } from "@/components/dashboard/sidebar/items";

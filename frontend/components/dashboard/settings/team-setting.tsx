@@ -14,7 +14,7 @@ import {
 import { Icon } from "@iconify/react";
 import { cn } from "@nextui-org/react";
 
-import TeamManageTable from "./team-manage-table";
+import TeamManageTable from "../team-manage-table";
 
 interface TeamSettingCardProps {
   className?: string;

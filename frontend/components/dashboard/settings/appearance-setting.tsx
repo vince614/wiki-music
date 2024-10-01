@@ -4,7 +4,7 @@ import * as React from "react";
 import { RadioGroup, Select, SelectItem, Spacer } from "@nextui-org/react";
 import { cn } from "@nextui-org/react";
 
-import SwitchCell from "./switch-cell";
+import SwitchCell from "../switch-cell";
 
 import { ThemeCustomRadio } from "@/components/dashboard/theme-custom-ratio";
 import {useTheme} from "next-themes";

@@ -12,7 +12,7 @@ import {
 import { Icon } from "@iconify/react";
 import { cn } from "@nextui-org/react";
 
-import { PlanCustomRadio } from "./plan-custom-radio";
+import { PlanCustomRadio } from "../plan-custom-radio";
 
 interface BillingSettingCardProps {
   className?: string;
