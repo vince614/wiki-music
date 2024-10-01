@@ -13,6 +13,7 @@ import {
 import { Icon } from "@iconify/react";
 import { useMediaQuery } from "usehooks-ts";
 import { cn } from "@nextui-org/react";
+import { User } from "next-auth";
 
 import { Logo } from "@/components/icons";
 import ProfileSetting from "@/components/dashboard/profile-setting";
@@ -23,6 +24,10 @@ import TeamSetting from "@/components/dashboard/team-setting";
 import SidebarDrawer from "@/components/dashboard/sidebar-drawer";
 import Sidebar from "@/components/dashboard/sidebar/sidebar";
 import { items } from "@/components/dashboard/sidebar/items";
+
+interface DashboardProps {
+  user?: User | undefined;
+}
 
 /**
  * This example requires installing the `usehooks-ts` and `lodash` packages.
@@ -44,7 +49,7 @@ import { items } from "@/components/dashboard/sidebar/items";
  * <Sidebar defaultSelectedKey="home" selectedKeys={[currentPath]} />
  * ```
  */
-export default function Dashboard() {
+export default function Dashboard({ user }: DashboardProps) {
   const { isOpen, onOpenChange } = useDisclosure();
   const [isCollapsed, setIsCollapsed] = React.useState(false);
   const isMobile = useMediaQuery("(max-width: 768px)");
@@ -57,7 +62,7 @@ export default function Dashboard() {
     <div className="flex h-dvh w-full gap-4">
       {/* Sidebar */}
       <SidebarDrawer
-        className={cn("min-w-[288px] rounded-lg", {
+        className={cn("min-w-[288px]", {
           "min-w-[76px]": isCollapsed,
         })}
         hideCloseButton={true}
@@ -88,7 +93,7 @@ export default function Dashboard() {
                 },
               )}
             >
-              Acme
+              Music app
             </span>
             <div className={cn("flex-end flex", { hidden: isCollapsed })}>
               <Icon
@@ -101,21 +106,17 @@ export default function Dashboard() {
           </div>
           <Spacer y={6} />
           <div className="flex items-center gap-3 px-3">
-            <Avatar
-              isBordered
-              size="sm"
-              src="https://nextuipro.nyc3.cdn.digitaloceanspaces.com/components-images/avatars/e1b8ec120710c09589a12c0004f85825.jpg"
-            />
+            <Avatar isBordered size="sm" src={user?.image || ""} />
             <div
               className={cn("flex max-w-full flex-col", {
                 hidden: isCollapsed,
               })}
             >
               <p className="text-small font-medium text-foreground">
-                Kate Moore
+                {user?.name}
               </p>
               <p className="text-tiny font-medium text-default-400">
-                Customer Support
+                {user?.email}
               </p>
             </div>
           </div>
@@ -265,7 +266,7 @@ export default function Dashboard() {
           }}
         >
           <Tab key="profile" title="Profile">
-            <ProfileSetting />
+            <ProfileSetting user={user} />
           </Tab>
           <Tab key="appearance" title="Appearance">
             <AppearanceSetting />

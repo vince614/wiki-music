@@ -7,7 +7,6 @@ import "next-auth/jwt";
 import Discord from "next-auth/providers/discord";
 import Google from "next-auth/providers/google";
 import Spotify from "next-auth/providers/spotify";
-
 import { createStorage } from "unstorage";
 import memoryDriver from "unstorage/drivers/memory";
 import { UnstorageAdapter } from "@auth/unstorage-adapter";

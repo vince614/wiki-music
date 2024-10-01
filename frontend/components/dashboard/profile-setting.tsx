@@ -6,15 +6,17 @@ import { Avatar } from "@nextui-org/avatar";
 import { Icon } from "@iconify/react";
 import { Button, Badge, Input, Spacer, Textarea } from "@nextui-org/react";
 import { cn } from "@nextui-org/react";
+import { User } from "next-auth";
 
 interface ProfileSettingCardProps {
   className?: string;
+  user?: User | undefined;
 }
 
 const ProfileSetting = React.forwardRef<
   HTMLDivElement,
   ProfileSettingCardProps
->(({ className, ...props }, ref) => (
+>(({ className, user, ...props }, ref) => (
   <div ref={ref} className={cn("p-2", className)} {...props}>
     {/* Profile */}
     <div>
@@ -43,39 +45,22 @@ const ProfileSetting = React.forwardRef<
               placement="bottom-right"
               shape="circle"
             >
-              <Avatar
-                className="h-16 w-16"
-                src="https://nextuipro.nyc3.cdn.digitaloceanspaces.com/components-images/avatars/e1b8ec120710c09589a12c0004f85825.jpg"
-              />
+              <Avatar className="h-16 w-16" src={user?.image ?? ""} />
             </Badge>
             <div>
-              <p className="text-sm font-medium text-default-600">Kate Moore</p>
-              <p className="text-xs text-default-400">Customer Support</p>
-              <p className="mt-1 text-xs text-default-400">
-                kate.moore@acme.com
+              <p className="text-sm font-medium text-default-600">
+                {user?.name}
+              </p>
+              <p className="mt-1 text-xs text-default-400">{user?.email}</p>
+              <p className="mt-1 text-xs text-default-300">
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla
+                nec purus feugiat, molestie ipsum et, eleifend nunc. In hac
+                habitasse platea dictumst.
               </p>
             </div>
           </div>
         </CardBody>
       </Card>
-    </div>
-    <Spacer y={4} />
-    {/* Title */}
-    <div>
-      <p className="text-base font-medium text-default-700">Title</p>
-      <p className="mt-1 text-sm font-normal text-default-400">
-        Set your current role.
-      </p>
-      <Input className="mt-2" placeholder="e.g Customer Support" />
-    </div>
-    <Spacer y={2} />
-    {/* Location */}
-    <div>
-      <p className="text-base font-medium text-default-700">Location</p>
-      <p className="mt-1 text-sm font-normal text-default-400">
-        Set your current location.
-      </p>
-      <Input className="mt-2" placeholder="e.g Buenos Aires, Argentina" />
     </div>
     <Spacer y={4} />
     {/* Biography */}
