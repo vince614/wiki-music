@@ -2,7 +2,9 @@ import { Metadata } from "next";
 
 import { siteConfig } from "@/config/site";
 import { auth } from "@/auth";
-import HomeComponent from "@/components/dashboard/page/home";
+import Dashboard from "@/components/dashboard/Dashboard";
+import SettingsComponent from "@/components/dashboard/page/settings";
+import React from "react";
 
 export const metadata: Metadata = {
   title: {
@@ -15,6 +17,11 @@ export const metadata: Metadata = {
   },
 };
 
-export default async function DashboardPage() {
-  return <HomeComponent />;
+export default async function SettingsPage() {
+  const session = await auth();
+
+  return <SettingsComponent
+    key="settings"
+    user={session?.user}
+  />;
 }

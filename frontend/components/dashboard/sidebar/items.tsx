@@ -16,7 +16,7 @@ export const items: SidebarItem[] = [
   },
   {
     key: "search",
-    href: "#",
+    href: "/search",
     icon: "solar:magnifer-outline",
     title: "Search",
   },
@@ -27,8 +27,8 @@ export const items: SidebarItem[] = [
     title: "Library",
   },
   {
-    key: "playlists",
-    href: "#",
+    key: "playlist",
+    href: "/dashboard/playlist",
     icon: "solar:playlist-outline",
     title: "Playlists",
   },
@@ -45,7 +45,7 @@ export const items: SidebarItem[] = [
   },
   {
     key: "settings",
-    href: "#",
+    href: "/dashboard/settings",
     icon: "solar:settings-outline",
     title: "Settings",
   },

@@ -4,26 +4,47 @@ import React from "react";
 import { Card, CardBody, Image, Button, Slider } from "@nextui-org/react";
 
 import { HeartIcon } from "@/components/icons/HeartIcon";
-import { PauseCircleIcon } from "@/components/icons/PauseCircleIcon";
+import {
+  PauseCircleIcon,
+  PlayCircleIcon,
+} from "@/components/icons/PauseCircleIcon";
 import { NextIcon } from "@/components/icons/NextIcon";
 import { PreviousIcon } from "@/components/icons/PreviousIcon";
 import { RepeatOneIcon } from "@/components/icons/RepeatOneIcon";
 import { ShuffleIcon } from "@/components/icons/ShuffleIcon";
 
-export default async function SongCard({
+export default function SongCard({
   songName,
   songArtist,
   songDuration,
   songAlbum,
   songCover,
+  songPreviewUrl,
 }: {
   songName: string;
   songArtist: string;
   songDuration: number;
   songAlbum: string;
   songCover: string;
+  songPreviewUrl: string;
 }) {
   const [liked, setLiked] = React.useState(false);
+  const [playing, setPlaying] = React.useState(false);
+
+  if (!songPreviewUrl) return;
+  const audio = new Audio(songPreviewUrl);
+
+  const playSong = async () => {
+    await audio.play();
+    console.log("Playing song");
+    setPlaying(true);
+  };
+
+  const pauseSong = () => {
+    console.log("pause");
+    audio.pause();
+    setPlaying(false);
+  };
 
   return (
     <Card
@@ -107,7 +128,11 @@ export default async function SongCard({
                 radius="full"
                 variant="light"
               >
-                <PauseCircleIcon size={54} />
+                {playing ? (
+                  <PlayCircleIcon size={54} onClick={pauseSong} />
+                ) : (
+                  <PauseCircleIcon size={54} onClick={playSong} />
+                )}
               </Button>
               <Button
                 isIconOnly
