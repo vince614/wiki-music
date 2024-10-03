@@ -21,11 +21,12 @@ app.post('/users/upsert', async (req, res, next) => {
   try {
     const user = await prisma.user.upsert({
       where: {
-        email: req.body.email,
+        identifier: req.body.identifier,
       },
       update: { ... req.body },
       create: { ... req.body },
     });
+    console.log('User upserted: ', user);
     res.status(201).json(user);
   } catch (err) {
     next(err);

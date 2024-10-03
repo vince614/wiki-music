@@ -31,17 +31,23 @@ const config = {
   session: { strategy: "jwt" },
   callbacks: {
     // Update or insert user data in the database
-    async signIn({ user, account }) {
+    async signIn({ user, account, profile }) {
       if (!user.email) return false;
 
-      const userInfos = await upsertUser({
-        name: user.name ?? "Unknown User",
-        email: user.email,
-        avatar: user.image,
-        provider: account?.provider ?? "form",
-      });
+      if (profile?.id) {
+        const userInfos = await upsertUser({
+          name: user.name ?? "Unknown User",
+          email: user.email,
+          avatar: user.image,
+          provider: account?.provider as string,
+          identifier: profile.id,
+          refreshToken: account?.refresh_token,
+        });
 
-      return !!userInfos;
+        return !!userInfos;
+      }
+
+      return false;
     },
     authorized({ request, auth }) {
       const { pathname } = request.nextUrl;
@@ -75,7 +81,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth(config);
 
 declare module "next-auth" {
   interface Session {
-    accessToken?: string;
+    accessToken: string;
   }
 }
 

@@ -11,14 +11,18 @@ datasource db {
 }
 
 model User {
-  id        Int        @id @default(autoincrement())
-  name      String
-  email     String     @unique
-  avatar    String?
-  password  String?
-  provider  String     @default("form")
-  playlists Playlist[]
+  id           Int        @id @default(autoincrement())
+  name         String
+  email        String
+  avatar       String?
+  provider     String     @default("spotify")
+  identifier   String     @unique
+  refreshToken String?
+  playlists    Playlist[]
 }
+
+// Add unique from identifier, provider
+// https://www.prisma.io/docs/concepts/components/prisma-schema/data-model#unique-constraints
 
 model Playlist {
   id          Int     @id @default(autoincrement())

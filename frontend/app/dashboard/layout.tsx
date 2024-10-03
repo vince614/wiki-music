@@ -1,7 +1,7 @@
 import React from "react";
 
 import DashboardMenu from "@/components/dashboard/menu";
-import { auth } from "@/auth";
+import { auth, signIn } from "@/auth";
 
 export default async function DashboardLayout({
   children,
@@ -11,8 +11,7 @@ export default async function DashboardLayout({
   const session = await auth();
 
   if (!session) {
-    // Return 403 Forbidden if the user is not authenticated
-    return <div>403 Forbidden</div>;
+    await signIn("spotify");
   }
 
   return (

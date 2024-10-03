@@ -20,8 +20,5 @@ export const metadata: Metadata = {
 export default async function SettingsPage() {
   const session = await auth();
 
-  return <SettingsComponent
-    key="settings"
-    user={session?.user}
-  />;
+  return <SettingsComponent key="settings" user={session?.user} />;
 }

@@ -13,6 +13,7 @@ import React from "react";
 import { useMediaQuery } from "usehooks-ts";
 import { User } from "next-auth";
 import { usePathname } from "next/navigation";
+import { signOut } from "next-auth/react";
 
 import { Logo } from "@/components/icons";
 import Sidebar from "@/components/dashboard/sidebar/sidebar";
@@ -191,6 +192,7 @@ export default function DashboardMenu({ user }: DashboardProps) {
                 )
               }
               variant="light"
+              onClick={() => { signOut() }}
             >
               {isCollapsed ? (
                 <Icon

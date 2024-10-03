@@ -6,6 +6,8 @@ export interface UserFormInterface {
   email: string;
   avatar?: string | null;
   provider: string;
+  identifier: string;
+  refreshToken?: string;
 }
 
 export interface IconPropsInterface extends SVGProps<SVGSVGElement> {

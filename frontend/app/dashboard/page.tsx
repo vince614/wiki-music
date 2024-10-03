@@ -1,7 +1,6 @@
 import { Metadata } from "next";
 
 import { siteConfig } from "@/config/site";
-import { auth } from "@/auth";
 import HomeComponent from "@/components/dashboard/page/home";
 
 export const metadata: Metadata = {
