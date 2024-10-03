@@ -4,6 +4,7 @@ import React from "react";
 
 import DashboardMenu from "@/components/dashboard/menu";
 import { auth } from "@/auth";
+import DashboardBreadcrumbs from "@/components/dashboard/breadcrumbs";
 
 export default async function DashboardLayout({
   children,
@@ -16,7 +17,10 @@ export default async function DashboardLayout({
     <div className="flex h-dvh w-full gap-4">
       {/* Sidebar */}
       <DashboardMenu user={session?.user} />
-      {children}
+      <div className="w-full flex-1 p-4">
+        <DashboardBreadcrumbs />
+        {children}
+      </div>
     </div>
   );
 }

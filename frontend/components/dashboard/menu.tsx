@@ -36,8 +36,6 @@ export default function DashboardMenu({ user }: DashboardProps) {
   const pathname = usePathname();
   const currentPath = pathname?.split("/")?.[2];
 
-  console.log(currentPath);
-
   return (
     <SidebarDrawer
       className={cn("min-w-[288px]", {
