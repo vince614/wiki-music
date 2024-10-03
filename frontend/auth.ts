@@ -27,8 +27,9 @@ const config = {
     logo: "https://authjs.dev/img/logo-sm.png",
   },
   adapter: UnstorageAdapter(storage),
-  providers: [Discord, Google, Spotify],
+  providers: [Spotify],
   session: { strategy: "jwt" },
+  trustHost: true,
   callbacks: {
     // Update or insert user data in the database
     async signIn({ user, account, profile }) {
@@ -61,7 +62,7 @@ const config = {
         return {
           ...token,
           accessToken: account.access_token,
-          identifier: profile?.id,
+          identifier: profile?.id ?? undefined,
         };
       }
 

@@ -3,11 +3,11 @@
 import * as React from "react";
 import { RadioGroup, Select, SelectItem, Spacer } from "@nextui-org/react";
 import { cn } from "@nextui-org/react";
+import { useTheme } from "next-themes";
 
 import SwitchCell from "../switch-cell";
 
 import { ThemeCustomRadio } from "@/components/dashboard/theme-custom-ratio";
-import {useTheme} from "next-themes";
 
 interface AppearanceSettingCardProps {
   className?: string;
@@ -37,7 +37,12 @@ const AppearanceSetting = React.forwardRef<
           Change the appearance of the web.
         </p>
         {/* Theme radio group */}
-        <RadioGroup defaultValue={theme} className="mt-4 flex-wrap" orientation="horizontal" onChange={onChange}>
+        <RadioGroup
+          className="mt-4 flex-wrap"
+          defaultValue={theme}
+          orientation="horizontal"
+          onChange={onChange}
+        >
           <ThemeCustomRadio value="light" variant="light">
             Light
           </ThemeCustomRadio>

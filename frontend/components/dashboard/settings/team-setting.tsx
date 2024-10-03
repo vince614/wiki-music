@@ -14,8 +14,6 @@ import {
 import { Icon } from "@iconify/react";
 import { cn } from "@nextui-org/react";
 
-import TeamManageTable from "../team-manage-table";
-
 interface TeamSettingCardProps {
   className?: string;
 }
@@ -124,8 +122,6 @@ const TeamSetting = React.forwardRef<HTMLDivElement, TeamSettingCardProps>(
         </CardBody>
       </Card>
       <Spacer y={4} />
-      {/* Team management table */}
-      <TeamManageTable />
     </div>
   ),
 );

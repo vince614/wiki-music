@@ -1,10 +1,9 @@
 import { Metadata } from "next";
+import React from "react";
 
 import { siteConfig } from "@/config/site";
 import { auth } from "@/auth";
-import Dashboard from "@/components/dashboard/Dashboard";
 import SettingsComponent from "@/components/dashboard/page/settings";
-import React from "react";
 
 export const metadata: Metadata = {
   title: {

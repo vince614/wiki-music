@@ -97,7 +97,7 @@ export default function DashboardMenu({ user }: DashboardProps) {
         <Spacer y={6} />
 
         <Sidebar
-          defaultOpenKeys="trending"
+          defaultSelectedKey="trending"
           iconClassName="group-data-[selected=true]:text-default-50"
           isCompact={isCollapsed}
           itemClasses={{
@@ -190,7 +190,9 @@ export default function DashboardMenu({ user }: DashboardProps) {
                 )
               }
               variant="light"
-              onClick={() => { signOut() }}
+              onClick={() => {
+                signOut().then(() => window.location.reload());
+              }}
             >
               {isCollapsed ? (
                 <Icon

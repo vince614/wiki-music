@@ -4,7 +4,7 @@ import * as React from "react";
 import { Card, CardBody } from "@nextui-org/card";
 import { Avatar } from "@nextui-org/avatar";
 import { Icon } from "@iconify/react";
-import { Button, Badge, Input, Spacer, Textarea } from "@nextui-org/react";
+import { Button, Badge, Spacer, Textarea } from "@nextui-org/react";
 import { cn } from "@nextui-org/react";
 import { User } from "next-auth";
 
