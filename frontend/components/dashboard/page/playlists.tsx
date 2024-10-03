@@ -1,28 +1,37 @@
 "use client";
 
+import React from "react";
 import { Button } from "@nextui-org/react";
 import { Icon } from "@iconify/react";
-import React from "react";
+import { SimplifiedPlaylist } from "@spotify/web-api-ts-sdk/src/types";
 
-export default function PlaylistsComponent() {
+export default async function Playlist({
+  playlist,
+}: {
+  playlist: SimplifiedPlaylist;
+}) {
   return (
-    <div className="w-full max-w-2xl flex-1 p-4">
-      {/* Title */}
-      <div className="flex items-center gap-x-3">
-        <Button isIconOnly className="sm:hidden" size="sm" variant="flat">
-          <Icon
-            className="text-default-500"
-            icon="solar:sidebar-minimalistic-linear"
-            width={20}
-          />
-        </Button>
-        <h1 className="text-3xl font-bold leading-9 text-default-foreground">
-          Playlist
-        </h1>
+    <div
+      key={playlist.id}
+      className="flex items-center justify-between p-2 bg-default-100 rounded-lg mt-4"
+    >
+      <div className="flex items-center gap-3">
+        <Icon className="h-6 w-6 text-default-500" icon="carbon:playlist" />
+        <div>
+          <p className="text-sm font-medium text-default-700">
+            {playlist.name}
+          </p>
+          <p className="text-xs text-default-400">{playlist.description}</p>
+        </div>
       </div>
-      <h2 className="mt-2 text-small text-default-500">
-        Show all your playlists here.
-      </h2>
+      <Button
+        className="bg-default-foreground text-background"
+        radius="md"
+        size="sm"
+        variant="shadow"
+      >
+        View
+      </Button>
     </div>
   );
 }

@@ -56,9 +56,13 @@ const config = {
 
       return true;
     },
-    jwt({ token, account }) {
+    jwt({ token, account, profile }) {
       if (account?.provider === "spotify") {
-        return { ...token, accessToken: account.access_token };
+        return {
+          ...token,
+          accessToken: account.access_token,
+          identifier: profile?.id,
+        };
       }
 
       return token;
@@ -66,9 +70,18 @@ const config = {
     async session({ session, token }) {
       if (token?.accessToken) {
         session.accessToken = token.accessToken;
+        session.identifier = token.identifier;
       }
 
       return session;
+    },
+    async redirect({ url, baseUrl }) {
+      // Allows relative callback URLs
+      if (url.startsWith("/")) return `${baseUrl}${url}`;
+      // Allows callback URLs on the same origin
+      else if (new URL(url).origin === baseUrl) return url;
+
+      return baseUrl;
     },
   },
   experimental: {
@@ -82,11 +95,13 @@ export const { handlers, auth, signIn, signOut } = NextAuth(config);
 declare module "next-auth" {
   interface Session {
     accessToken: string;
+    identifier?: string;
   }
 }
 
 declare module "next-auth/jwt" {
   interface JWT {
     accessToken?: string;
+    identifier?: string;
   }
 }
