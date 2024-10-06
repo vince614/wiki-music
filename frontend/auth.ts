@@ -44,7 +44,7 @@ const config = {
           provider: account?.provider as string,
           identifier: profile.id,
           refreshToken: account?.refresh_token,
-          href: profile.href, // @ts-ignore
+          href: profile.href as string,
         });
 
         return !!userInfos;
@@ -73,7 +73,7 @@ const config = {
     async session({ session, token }) {
       if (token?.accessToken) {
         session.accessToken = token.accessToken;
-        session.identifier = token.identifier;
+        session.identifier = token.identifier as string;
       }
 
       return session;
