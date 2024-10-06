@@ -1,12 +1,23 @@
-"use server";
-
 import React from "react";
+import { Metadata } from "next";
 
 import DashboardMenu from "@/components/dashboard/menu";
-import { auth } from "@/auth";
 import DashboardBreadcrumbs from "@/components/dashboard/breadcrumbs";
+import { siteConfig } from "@/config/site";
+import { auth } from "@/auth";
 
-export default async function DashboardLayout({
+export const metadata: Metadata = {
+  title: {
+    default: siteConfig.name,
+    template: `%s - ${siteConfig.name}`,
+  },
+  description: siteConfig.description,
+  icons: {
+    icon: "/favicon.ico",
+  },
+};
+
+export default async function Layout({
   children,
 }: {
   children: React.ReactNode;
@@ -15,7 +26,6 @@ export default async function DashboardLayout({
 
   return (
     <div className="flex h-dvh w-full gap-4">
-      {/* Sidebar */}
       <DashboardMenu user={session?.user} />
       <div className="w-full flex-1 p-4">
         <DashboardBreadcrumbs />

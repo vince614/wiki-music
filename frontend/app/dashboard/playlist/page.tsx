@@ -1,8 +1,5 @@
 "use server";
 
-import { SimplifiedPlaylist } from "@spotify/web-api-ts-sdk/src/types";
-
-import {Accordion, AccordionItem } from "@nextui-org/react";
 import PlaylistsComponent from "@/components/dashboard/page/playlists";
 import { auth } from "@/auth";
 import { getUserPlaylists } from "@/lib/spotify/api";

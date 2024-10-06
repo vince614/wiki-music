@@ -1,6 +1,6 @@
 "use client";
 
-import { Button, Tab, Tabs, useDisclosure } from "@nextui-org/react";
+import { Button, Tab, Tabs } from "@nextui-org/react";
 import { Icon } from "@iconify/react";
 import React from "react";
 
@@ -16,12 +16,7 @@ export default function SettingsComponent({ user }) {
     <div className="w-full max-w-2xl flex-1 p-4">
       {/* Title */}
       <div className="flex items-center gap-x-3">
-        <Button
-          isIconOnly
-          className="sm:hidden"
-          size="sm"
-          variant="flat"
-        >
+        <Button isIconOnly className="sm:hidden" size="sm" variant="flat">
           <Icon
             className="text-default-500"
             icon="solar:sidebar-minimalistic-linear"

@@ -1,5 +1,6 @@
-import { SVGProps } from 'react';
-import { PlaylistStatus } from '@/types/enum';
+import { SVGProps } from "react";
+
+import { PlaylistStatus } from "@/types/enum";
 
 export type IconSvgProps = SVGProps<SVGSVGElement> & {
   size?: number;
@@ -21,7 +22,7 @@ export type Playlist = {
   likes: number;
   status: PlaylistStatus;
   createdAt: string;
-}
+};
 
 export type Comment = {
   id: string;
