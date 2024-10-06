@@ -27,7 +27,139 @@ app.post('/users/upsert', async (req, res, next) => {
       create: { ... req.body },
     });
     console.log('User upserted: ', user);
-    res.status(201).json(user);
+    res.status(201)
+        .json({
+          message: 'User upserted',
+          code: 201
+        });
+  } catch (err) {
+    next(err);
+  }
+});
+
+app.post('/users/sync', async (req, res, next) => {
+  try {
+    const playlists = req.body.playlists;
+    const albums = req.body.albums;
+    const artists = req.body.artists;
+    const userId = req.body.userId;
+
+    let playlistUpsertCount = 0;
+    for (const playlist of playlists) {
+      const playlistUpsert = await prisma.playlist.upsert({
+        where: {
+          identifier: playlist.id,
+        },
+        update: {
+          name: playlist.name,
+          description: playlist.description,
+          imageUri: playlist.images[0].url,
+          public: playlist.public,
+        },
+        create: {
+          identifier: playlist.id,
+          name: playlist.name,
+          description: playlist.description,
+          imageUri: playlist.images[0].url,
+          public: playlist.public,
+          href: playlist.href,
+          author: {
+            connect: {
+              identifier: playlist.owner.id,
+            },
+            connectOrCreate: {
+              where: {
+                identifier: playlist.owner.id,
+              },
+              create: {
+                identifier: playlist.owner.id,
+                name: playlist.owner.display_name,
+                href: playlist.owner.href,
+              },
+            }
+          },
+        },
+      });
+      playlistUpsertCount++;
+    }
+
+    let AlbumUpsertCount = 0;
+    for (const album of albums) {
+      const item = album.album;
+
+      const albumUpsert = await prisma.album.upsert({
+        where: {
+          identifier: item.id,
+        },
+        update: {
+          popularity: item.popularity,
+          availableMarkets: item.available_markets,
+          images: item.images.map((i) => i.url),
+        },
+        create: {
+          identifier: item.id,
+          name: item.name,
+          images: item.images.map((i) => i.url),
+          releaseDate: new Date(item.release_date),
+          totalTracks: item.total_tracks,
+          href: item.href,
+          popularity: item.popularity,
+          availableMarkets: item.available_markets,
+          artists: {
+            connectOrCreate: item.artists.map((artist) => ({
+              where: {
+                identifier: artist.id,
+              },
+              create: {
+                identifier: artist.id,
+                name: artist.name,
+                href: artist.href,
+              },
+            })),
+          },
+          user: {
+            connect: {
+              identifier: userId,
+            },
+          }
+        },
+      });
+
+      AlbumUpsertCount++;
+      // console.log('Album upserted: ', albumUpsert);
+    }
+
+    let ArtistUpsertCount = 0;
+    for (const artist of artists) {
+      const artistUpsert = await prisma.artist.upsert({
+        where: {
+          identifier: artist.id,
+        },
+        update: {
+          name: artist.name,
+          popularity: artist.popularity,
+          href: artist.href,
+          images: artist.images.map((i) => i.url),
+          followers: artist.followers.total,
+          genres: artist.genres,
+        },
+        create: {
+          identifier: artist.id,
+          name: artist.name,
+          popularity: artist.popularity,
+          href: artist.href,
+          images: artist.images.map((i) => i.url),
+          followers: artist.followers.total,
+          genres: artist.genres,
+        },
+      });
+    }
+
+    res.status(201)
+        .json({
+          message: `Upserted ${AlbumUpsertCount} albums, ${playlistUpsertCount} playlists & ${ArtistUpsertCount} artists.`,
+          code: 201
+        });
   } catch (err) {
     next(err);
   }

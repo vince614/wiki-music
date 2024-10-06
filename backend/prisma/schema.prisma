@@ -11,14 +11,20 @@ datasource db {
 }
 
 model User {
-  id           Int        @id @default(autoincrement())
+  id           Int     @id @default(autoincrement())
   name         String
-  email        String
+  email        String?
   avatar       String?
-  provider     String     @default("spotify")
-  identifier   String     @unique
+  provider     String  @default("spotify")
+  identifier   String  @unique
   refreshToken String?
-  playlists    Playlist[]
+  href         String?
+
+  playlists Playlist[]
+  artists   Artist[]
+  albums    Album[]
+  Song      Song?      @relation(fields: [songId], references: [id])
+  songId    Int?
 }
 
 // Add unique from identifier, provider
@@ -28,18 +34,58 @@ model Playlist {
   id          Int     @id @default(autoincrement())
   name        String
   description String?
+  imageUri    String?
+  identifier  String  @unique
   userId      Int
   author      User    @relation(fields: [userId], references: [id])
-  songs       Song[]
+  public      Boolean @default(false)
+  href        String?
+
+  songs Song[]
+}
+
+model Album {
+  id               Int      @id @default(autoincrement())
+  identifier       String   @unique
+  name             String
+  totalTracks      Int
+  releaseDate      DateTime
+  availableMarkets String[]
+  images           String[]
+  popularity       Int
+  href             String?
+
+  songs   Song[]
+  artists Artist[]
+  user    User[]
+}
+
+model Artist {
+  id         Int      @id @default(autoincrement())
+  identifier String   @unique
+  name       String
+  href       String?
+  popularity Int?
+  followers  Int?
+  genres     String[]
+  images     String[]
+
+  albums Album[]
+  user   User[]
 }
 
 model Song {
   id         Int      @id @default(autoincrement())
+  identifier String
   title      String
   artist     String
   url        String
   duration   Int
+  href       String?
   playlist   Playlist @relation(fields: [playlistId], references: [id])
   playlistId Int
-  test       String?
+  album      Album    @relation(fields: [albumId], references: [id])
+  albumId    Int
+
+  user User[]
 }

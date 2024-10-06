@@ -24,9 +24,18 @@ export default async function Layout({
 }) {
   const session = await auth();
 
+  if (!session) {
+    return (
+      <div>
+        <h1>Not authenticated</h1>
+        <a href="/api/auth/signin">Sign in</a>
+      </div>
+    );
+  }
+
   return (
     <div className="flex h-dvh w-full gap-4">
-      <DashboardMenu user={session?.user} />
+      <DashboardMenu session={session} />
       <div className="w-full flex-1 p-4">
         <DashboardBreadcrumbs />
         {children}

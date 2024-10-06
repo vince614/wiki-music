@@ -4,8 +4,6 @@ import type { NextAuthConfig } from "next-auth";
 import NextAuth from "next-auth";
 import "next-auth/jwt";
 
-import Discord from "next-auth/providers/discord";
-import Google from "next-auth/providers/google";
 import Spotify from "next-auth/providers/spotify";
 import { createStorage } from "unstorage";
 import memoryDriver from "unstorage/drivers/memory";
@@ -18,8 +16,6 @@ const storage = createStorage({
   driver: memoryDriver(),
 });
 
-// @ts-ignore
-// @ts-ignore
 const config = {
   theme: {
     colorScheme: "auto",
@@ -27,7 +23,12 @@ const config = {
     logo: "https://authjs.dev/img/logo-sm.png",
   },
   adapter: UnstorageAdapter(storage),
-  providers: [Spotify],
+  providers: [
+    Spotify({
+      authorization:
+        "https://accounts.spotify.com/authorize?scope=user-read-email%20user-read-private%20user-library-read%20playlist-read-private%20user-read-playback-state%20user-read-currently-playing%20user-modify-playback-state%20user-follow-read&response_type=code",
+    }),
+  ],
   session: { strategy: "jwt" },
   trustHost: true,
   callbacks: {
@@ -43,6 +44,7 @@ const config = {
           provider: account?.provider as string,
           identifier: profile.id,
           refreshToken: account?.refresh_token,
+          href: profile.href, // @ts-ignore
         });
 
         return !!userInfos;
@@ -96,7 +98,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth(config);
 declare module "next-auth" {
   interface Session {
     accessToken: string;
-    identifier?: string;
+    identifier: string;
   }
 }
 

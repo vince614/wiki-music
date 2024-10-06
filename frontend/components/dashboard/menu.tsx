@@ -11,7 +11,7 @@ import {
 import { Icon } from "@iconify/react";
 import React from "react";
 import { useMediaQuery } from "usehooks-ts";
-import { User } from "next-auth";
+import { Session, User } from "next-auth";
 import { usePathname } from "next/navigation";
 import { signOut } from "next-auth/react";
 
@@ -19,15 +19,17 @@ import { Logo } from "@/components/icons";
 import Sidebar from "@/components/dashboard/sidebar/sidebar";
 import { items } from "@/components/dashboard/sidebar/items";
 import SidebarDrawer from "@/components/dashboard/sidebar-drawer";
+import { syncUserData } from "@/lib/user/data";
 
 interface DashboardProps {
-  user?: User | undefined;
+  session: Session;
 }
 
-export default function DashboardMenu({ user }: DashboardProps) {
+export default function DashboardMenu({ session }: DashboardProps) {
   const { isOpen, onOpenChange } = useDisclosure();
   const [isCollapsed, setIsCollapsed] = React.useState(false);
   const isMobile = useMediaQuery("(max-width: 768px)");
+  const user = session?.user as User;
 
   const onToggle = React.useCallback(() => {
     setIsCollapsed((prev) => !prev);
@@ -202,6 +204,45 @@ export default function DashboardMenu({ user }: DashboardProps) {
                 />
               ) : (
                 "Log Out"
+              )}
+            </Button>
+          </Tooltip>
+
+          <Tooltip
+            content="Sync Data"
+            isDisabled={!isCollapsed}
+            placement="right"
+          >
+            <Button
+              className={cn(
+                "justify-start text-default-500 data-[hover=true]:text-foreground",
+                {
+                  "justify-center": isCollapsed,
+                },
+              )}
+              isIconOnly={isCollapsed}
+              startContent={
+                isCollapsed ? null : (
+                  <Icon
+                    className="flex-none rotate-180 text-default-500"
+                    icon="solar:refresh-line-duotone"
+                    width={24}
+                  />
+                )
+              }
+              variant="light"
+              onClick={async () => {
+                await syncUserData(session.accessToken, session.identifier);
+              }}
+            >
+              {isCollapsed ? (
+                <Icon
+                  className="rotate-180 text-default-500"
+                  icon="solar:refresh-line-duotone"
+                  width={24}
+                />
+              ) : (
+                "Sync Data"
               )}
             </Button>
           </Tooltip>

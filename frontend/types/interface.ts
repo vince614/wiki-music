@@ -8,6 +8,7 @@ export interface UserFormInterface {
   provider: string;
   identifier: string;
   refreshToken?: string;
+  href: string;
 }
 
 export interface IconPropsInterface extends SVGProps<SVGSVGElement> {
