@@ -11,6 +11,32 @@ export interface UserFormInterface {
   href: string;
 }
 
+export interface SearchResultInterface {
+  songs: SongResultInterface[];
+  albums: AlbumResultInterface[];
+  artists: ArtistResultInterface[];
+}
+
+export interface SongResultInterface {
+  name: string;
+  artist: string;
+  album: string;
+  image: string;
+  duration: string;
+}
+
+export interface AlbumResultInterface {
+  name: string;
+  artist: string;
+  image: string;
+  release_date: string;
+}
+
+export interface ArtistResultInterface {
+  name: string;
+  image: string;
+}
+
 export interface IconPropsInterface extends SVGProps<SVGSVGElement> {
   size?: number;
   strokeWidth?: number;

@@ -49,7 +49,7 @@ export default function DashboardMenu({ session }: DashboardProps) {
     >
       <div
         className={cn(
-          "will-change relative flex h-full w-72 flex-col bg-default-100 p-6 transition-width",
+          "will-change fixed flex h-full w-72 flex-col bg-default-100 p-6 transition-width",
           {
             "w-[83px] items-center px-[6px] py-6": isCollapsed,
           },

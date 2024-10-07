@@ -1,7 +1,7 @@
 "use server";
 
 import {
-  FollowedArtists,
+  FollowedArtists, MaxInt,
   SimplifiedAlbum,
   SpotifyApi,
 } from "@spotify/web-api-ts-sdk";
@@ -14,8 +14,13 @@ const api = SpotifyApi.withClientCredentials(
   process.env.AUTH_SPOTIFY_SECRET as string,
 );
 
-export async function searchSong(query: string) {
-  return await api.search(query, ["track"]);
+export async function searchSpotifySong(query: string, limit: MaxInt<50> = 20) {
+  return await api.search(
+    query,
+    ["track", "artist", "album"],
+    undefined,
+    limit,
+  );
 }
 
 export async function getUserPlaylists(

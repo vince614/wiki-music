@@ -10,27 +10,21 @@ import { type SidebarItem } from "@/components/dashboard/sidebar/sidebar";
 export const items: SidebarItem[] = [
   {
     key: "trending",
-    href: "#",
+    href: "/dashboard/trending",
     icon: "solar:fire-outline",
     title: "Trending",
   },
   {
     key: "search",
-    href: "/search",
+    href: "/dashboard/search",
     icon: "solar:magnifer-outline",
     title: "Search",
   },
   {
     key: "library",
-    href: "#",
+    href: "/dashboard/library",
     icon: "solar:library-outline",
     title: "Library",
-  },
-  {
-    key: "playlist",
-    href: "/dashboard/playlist",
-    icon: "solar:playlist-outline",
-    title: "Playlists",
   },
   {
     key: "notifications",

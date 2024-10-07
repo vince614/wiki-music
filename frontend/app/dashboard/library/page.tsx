@@ -4,7 +4,7 @@ import PlaylistsComponent from "@/components/dashboard/page/playlists";
 import { auth } from "@/auth";
 import { getUserPlaylists } from "@/lib/spotify/api";
 
-export default async function PlaylistsPage() {
+export default async function LibraryPage() {
   const session = await auth();
 
   if (!session?.user) {
