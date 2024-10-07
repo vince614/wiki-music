@@ -1,94 +1,51 @@
 "use server";
 
-import {
-  FollowedArtists, MaxInt,
-  SimplifiedAlbum,
-  SpotifyApi,
-} from "@spotify/web-api-ts-sdk";
-import { SimplifiedPlaylist } from "@spotify/web-api-ts-sdk/src/types";
+import { MaxInt, SpotifyApi } from "@spotify/web-api-ts-sdk";
 
-const spotifyApiUri = "https://api.spotify.com/v1";
+import { formatDuration } from "@/lib/utils";
+import { SearchResultInterface } from "@/types/interface";
 
 const api = SpotifyApi.withClientCredentials(
   process.env.AUTH_SPOTIFY_ID as string,
   process.env.AUTH_SPOTIFY_SECRET as string,
 );
 
-export async function searchSpotifySong(query: string, limit: MaxInt<50> = 20) {
-  return await api.search(
+export async function searchSpotify(
+  query: string,
+  limit: MaxInt<50> = 20,
+): Promise<SearchResultInterface> {
+  const data = await api.search(
     query,
     ["track", "artist", "album"],
     undefined,
     limit,
   );
-}
 
-export async function getUserPlaylists(
-  accessToken: string,
-  limit: number = 20,
-  offset: number = 0,
-): Promise<SimplifiedPlaylist[]> {
-  let url = new URL(`${spotifyApiUri}/me/playlists`);
-
-  url.searchParams.append("limit", limit.toString());
-  url.searchParams.append("offset", offset.toString());
-
-  const response = await fetch(url, {
-    headers: {
-      Authorization: `Bearer ${accessToken}`,
-    },
+  const songs = data.tracks.items.map((item) => {
+    return {
+      name: item.name,
+      artist: item.artists[0].name,
+      album: item.album.name,
+      image: item.album.images[0].url,
+      duration: formatDuration(item.duration_ms), // Convert to 3:23
+    };
   });
 
-  const data = await response.json();
-
-  return data.items;
-}
-
-export async function getUserAlbums(
-  accessToken: string,
-  limit: number = 20,
-  offset: number = 0,
-  market?: string,
-): Promise<SimplifiedAlbum[]> {
-  let url = new URL(`${spotifyApiUri}/me/albums`);
-
-  url.searchParams.append("limit", limit.toString());
-  url.searchParams.append("offset", offset.toString());
-  if (market) {
-    url.searchParams.append("market", market);
-  }
-
-  const response = await fetch(url, {
-    headers: {
-      Authorization: `Bearer ${accessToken}`,
-    },
+  const albums = data.albums.items.map((item) => {
+    return {
+      name: item.name,
+      artist: item.artists[0].name,
+      image: item.images[0].url,
+      release_date: item.release_date,
+    };
   });
 
-  const data = await response.json();
-
-  return data.items;
-}
-
-export async function getUserFollowedArtists(
-  accessToken: string,
-  after?: string,
-  limit: number = 20,
-): Promise<FollowedArtists[]> {
-  let url = new URL(`${spotifyApiUri}/me/following`);
-
-  url.searchParams.append("type", "artist");
-  url.searchParams.append("limit", limit.toString());
-  if (after) {
-    url.searchParams.append("after", after);
-  }
-
-  const response = await fetch(url, {
-    headers: {
-      Authorization: `Bearer ${accessToken}`,
-    },
+  const artists = data.artists.items.map((item) => {
+    return {
+      name: item.name,
+      image: item.images[0]?.url,
+    };
   });
 
-  const data = await response.json();
-
-  return data.artists.items;
+  return { songs, albums, artists };
 }

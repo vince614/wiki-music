@@ -16,9 +16,8 @@ import {
 import { useDebouncedCallback } from "use-debounce";
 import { useSearchParams, usePathname, useRouter } from "next/navigation";
 
-import { searchSpotifySong } from "@/lib/spotify/api";
+import { searchSpotify } from "@/lib/spotify/api";
 import { SearchResultInterface } from "@/types/interface";
-import { formatDuration } from "@/lib/utils";
 
 export default function SearchPage() {
   const [results, setResults] = React.useState<SearchResultInterface>({
@@ -50,39 +49,9 @@ export default function SearchPage() {
   }, 500);
 
   const searchSong = async (query: string) => {
-    const data = await searchSpotifySong(query, 8);
+    const result = await searchSpotify(query, 12);
 
-    const songs = data.tracks.items.map((item) => {
-      return {
-        name: item.name,
-        artist: item.artists[0].name,
-        album: item.album.name,
-        image: item.album.images[0].url,
-        duration: formatDuration(item.duration_ms), // Convert to 3:23
-      };
-    });
-
-    const albums = data.albums.items.map((item) => {
-      return {
-        name: item.name,
-        artist: item.artists[0].name,
-        image: item.images[0].url,
-        release_date: item.release_date,
-      };
-    });
-
-    const artists = data.artists.items.map((item) => {
-      return {
-        name: item.name,
-        image: item.images[0]?.url,
-      };
-    });
-
-    setResults({
-      songs: songs,
-      albums: albums,
-      artists: artists,
-    });
+    setResults(result);
   };
 
   return (
@@ -122,7 +91,7 @@ export default function SearchPage() {
           {results.albums.length > 0 && (
             <div className="mt-3">
               <h3 className="text-xl font-bold">Albums</h3>
-              <div className="flex gap-3 mt-8 flex-wrap justify-between m-2">
+              <div className="flex gap-3 mt-8 flex-wrap justify-start m-2">
                 {results.albums.map((album, index) => (
                   <Card
                     key={index}
@@ -151,20 +120,21 @@ export default function SearchPage() {
           {results.artists.length > 0 && (
             <div className="mt-10">
               <h3 className="text-xl font-bold">Artists</h3>
-              <div className="flex gap-3 mt-8 flex-wrap justify-between m-2">
+              <div className="flex gap-3 mt-8 flex-wrap justify-start col-end-4 m-2">
                 {results.artists.map((artist, index) => (
-                  <User
-                    key={index}
-                    avatarProps={{
-                      radius: "lg",
-                      size: "lg",
-                      src: artist.image,
-                    }}
-                    description="Artist"
-                    name={artist.name}
-                  >
-                    test
-                  </User>
+                  <div key={index} className="w-1/6">
+                    <User
+                      avatarProps={{
+                        radius: "lg",
+                        size: "lg",
+                        src: artist.image,
+                      }}
+                      description="Artist"
+                      name={artist.name}
+                    >
+                      {artist.name}
+                    </User>
+                  </div>
                 ))}
               </div>
             </div>

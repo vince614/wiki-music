@@ -2,7 +2,7 @@
 
 import PlaylistsComponent from "@/components/dashboard/page/playlists";
 import { auth } from "@/auth";
-import { getUserPlaylists } from "@/lib/spotify/api";
+import { getUserPlaylists } from "@/lib/spotify/user";
 
 export default async function LibraryPage() {
   const session = await auth();

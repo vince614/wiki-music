@@ -6,7 +6,7 @@ import {
   getUserAlbums,
   getUserFollowedArtists,
   getUserPlaylists,
-} from "@/lib/spotify/api";
+} from "@/lib/spotify/user";
 
 export const fetchAllUsers = async () => {
   return await Get("/users");
