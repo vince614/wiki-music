@@ -1,11 +1,7 @@
 "use server";
 
 import { UserFormInterface } from "@/types/interface";
-import {
-  getUserAlbums,
-  getUserFollowedArtists,
-  getUserPlaylists,
-} from "@/lib/spotify/user";
+import { signIn } from "@/auth";
 
 export const upsertUser = async (data: UserFormInterface) => {
   const response = await fetch("http://localhost:3000/api/users/upsert", {
@@ -17,13 +13,12 @@ export const upsertUser = async (data: UserFormInterface) => {
   });
 
   const result = await response.json();
-  console.log(result);
 
   return result;
 };
 
 export const syncUserData = async (accessToken: string, identifier: string) => {
-  return await fetch("http://localhost:3000/api/users/sync", {
+  const result = await fetch("http://localhost:3000/api/users/sync", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -33,4 +28,10 @@ export const syncUserData = async (accessToken: string, identifier: string) => {
       identifier: identifier,
     }),
   });
+
+  const data = await result.json();
+
+  if (data.code === 401) {
+    return signIn("spotify");
+  }
 };

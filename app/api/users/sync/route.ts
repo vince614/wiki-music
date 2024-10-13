@@ -2,6 +2,7 @@ import { NextResponse, NextRequest } from "next/server";
 import { PrismaClient } from "@prisma/client";
 
 import {
+  checkAccessToken,
   getUserAlbums,
   getUserFollowedArtists,
   getUserPlaylists,
@@ -9,7 +10,7 @@ import {
 
 const prisma = new PrismaClient();
 
-export async function POST(req: NextRequest) { 
+export async function POST(req: NextRequest) {
   const data = await req.json();
 
   // Check if the request has the required data
@@ -20,13 +21,21 @@ export async function POST(req: NextRequest) {
     });
   }
 
+  // Check if the access token is valid
+  const access = await checkAccessToken(data.accessToken);
+
+  if (!access) {
+    return NextResponse.json({
+      error: "Invalid access token",
+      code: 401,
+    });
+  }
+
   const playlists = await getUserPlaylists(data.accessToken);
   const albums = await getUserAlbums(data.accessToken);
   const artists = await getUserFollowedArtists(data.accessToken);
 
   try {
-    let playlistUpsertCount = 0;
-
     for (const playlist of playlists) {
       await prisma.playlist.upsert({
         where: {
@@ -59,10 +68,7 @@ export async function POST(req: NextRequest) {
           },
         },
       });
-      playlistUpsertCount++;
     }
-
-    let AlbumUpsertCount = 0;
 
     for (const album of albums) {
       await prisma.album.upsert({
@@ -102,11 +108,7 @@ export async function POST(req: NextRequest) {
           },
         },
       });
-      AlbumUpsertCount++;
     }
-
-    let ArtistUpsertCount = 0;
-
     for (const artist of artists.artists.items) {
       await prisma.artist.upsert({
         where: {
@@ -133,22 +135,13 @@ export async function POST(req: NextRequest) {
     }
 
     return NextResponse.json({
-      message: "jeee",
+      message: "User data synced",
       code: 201,
     });
   } catch (err) {
     return NextResponse.json({
-      message: "Error upserting user",
+      error: "Error upserting user",
       code: 500,
     });
   }
-}
-
-export async function GET(req: NextRequest) {
-  const data = await req.json();
-
-  return NextResponse.json({
-    message: "jeee",
-    code: 200,
-  });
 }

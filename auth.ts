@@ -5,9 +5,9 @@ import NextAuth from "next-auth";
 import "next-auth/jwt";
 
 import Spotify from "next-auth/providers/spotify";
-import { createStorage } from "unstorage";
 import memoryDriver from "unstorage/drivers/memory";
 import { UnstorageAdapter } from "@auth/unstorage-adapter";
+import { createStorage } from "unstorage";
 
 import { upsertUser } from "@/lib/user/data";
 
@@ -46,8 +46,6 @@ const config = {
           refreshToken: account?.refresh_token,
           href: profile.href as string,
         });
-
-        console.log(userInfos);
 
         return !!userInfos;
       }

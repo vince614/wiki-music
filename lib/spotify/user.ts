@@ -5,10 +5,20 @@ import { FollowedArtists, SimplifiedAlbum } from "@spotify/web-api-ts-sdk";
 
 const spotifyApiUri = "https://api.spotify.com/v1";
 
+export async function checkAccessToken(accessToken: string): Promise<boolean> {
+  const response = await fetch(`${spotifyApiUri}/me`, {
+    headers: {
+      Authorization: `Bearer ${accessToken}`,
+    },
+  });
+
+  return response.ok;
+}
+
 export async function getUserPlaylists(
   accessToken: string,
   limit: number = 20,
-  offset: number = 0,
+  offset: number = 0
 ): Promise<SimplifiedPlaylist[]> {
   let url = new URL(`${spotifyApiUri}/me/playlists`);
 
@@ -30,7 +40,7 @@ export async function getUserAlbums(
   accessToken: string,
   limit: number = 20,
   offset: number = 0,
-  market?: string,
+  market?: string
 ): Promise<SimplifiedAlbum[]> {
   let url = new URL(`${spotifyApiUri}/me/albums`);
 
@@ -54,7 +64,7 @@ export async function getUserAlbums(
 export async function getUserFollowedArtists(
   accessToken: string,
   after?: string,
-  limit: number = 20,
+  limit: number = 20
 ): Promise<FollowedArtists> {
   let url = new URL(`${spotifyApiUri}/me/following`);
 
